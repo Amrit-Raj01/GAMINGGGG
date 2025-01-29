@@ -1,0 +1,79 @@
+document.addEventListener("DOMContentLoaded", function() {
+    const questions = [
+        {
+            question: "Which of the following code is easier to learn?",
+            options: ["C", "HTML", "Python", "JAVA"],
+            answer: 2
+        },
+        {
+            question: "Who is the richest person in the world?",
+            options: ["Gautam Adani", "Elon Musk", "Mark Zuckerberg", "Cristiano Ronaldo"],
+            answer: 1
+        },
+        {
+            question: "Which month is the coldest in India?",
+            options: ["May", "December", "April", "January"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is related to Kapil Sharma?",
+            options: ["Philosopher", "Leader", "Singer", "Comedian"],
+            answer: 3
+        },
+        {
+            question: "Which of the following is related to 'Code With Harry'?",
+            options: ["Actor", "Coder", "Businessman", "Magician"],
+            answer: 1
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function startGame() {
+        document.getElementById("quiz-container").style.display = "block";
+        document.getElementById("startGame").style.display = "none";
+        document.getElementById("exitGame").style.display = "none";
+        loadQuestion();
+    }
+
+    function exitGame() {
+        alert("Game exited. See you next time!");
+    }
+
+    function loadQuestion() {
+        if (currentQuestion < questions.length) {
+            document.getElementById("question-box").innerText = questions[currentQuestion].question;
+            let optionsHTML = "";
+            questions[currentQuestion].options.forEach(function(opt, index) {
+                optionsHTML += '<div class="option" onclick="checkAnswer(' + index + ')">' + opt + '</div>';
+            });
+            document.getElementById("options").innerHTML = optionsHTML;
+        } else {
+            endGame();
+        }
+    }
+
+    window.checkAnswer = function(selected) {
+        if (selected === questions[currentQuestion].answer) {
+            score += 5;
+        }
+        currentQuestion++;
+        loadQuestion();
+    };
+
+    function endGame() {
+        let finalMsg = score <= 15 ? "You need more practice." :
+                       score > 25 ? "You are doing some fraud!" :
+                       "You are very good!";
+        
+        document.getElementById("quiz-container").innerHTML = `
+            <h2>Game Over!</h2>
+            <p>Your final score: ${score}</p>
+            <p>${finalMsg}</p>
+        `;
+    }
+
+    document.getElementById("startGame").addEventListener("click", startGame);
+    document.getElementById("exitGame").addEventListener("click", exitGame);
+});
